@@ -1,0 +1,9 @@
+torch>=2.6
+torchvision>=0.21
+einops>=0.8
+diffusers>=0.32
+huggingface-hub>=0.34
+safetensors>=0.4
+numpy>=1.26
+opencv-python-headless>=4.10
+Pillow>=10.1

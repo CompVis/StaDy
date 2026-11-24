@@ -1,0 +1,25 @@
+{
+  "dataset": "CelebV-HQ",
+  "video_name": "1RRRM17-4Ok_2_0",
+  "figure": "StaDy Figure 1",
+  "fps": 24.0,
+  "video_frames": 102,
+  "figure_frame_matches": [
+    [
+      4.34246826171875,
+      14
+    ],
+    [
+      4.261627197265625,
+      90
+    ]
+  ],
+  "source": "Original validation video and saved evaluation frame tensors",
+  "checkpoint": "celebv.pt",
+  "step": 400000,
+  "sample": {
+    "batch_idx": 16,
+    "sample_idx": 4
+  },
+  "recipient_source": "Original 256x256 JPEG embedded in the paper figure (celebv_sweep.pdf, image xref 74); the evaluation archive uses a different recipient pairing."
+}

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="StaDy: Factorizing the World into Static and Dynamic via Likelihood Matching. Learning latent actions with less appearance leakage.">
+  <meta name="theme-color" content="#ffffff">
+  <title>StaDy: Factorizing the World into Static and Dynamic via Likelihood Matching</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+    <details class="related-work-flyout">
+      <summary>
+        <svg class="related-work-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 5h16v12H8l-4 3z" />
+          <path d="M8 9h8M8 13h5" />
+        </svg>
+        <span>Related Work</span>
+        <svg class="related-work-chevron" viewBox="0 0 20 20" aria-hidden="true">
+          <path d="m6 12 4-4 4 4" />
+        </svg>
+      </summary>
+
+      <div class="related-work-panel">
+        <section>
+          <p class="related-work-label">From the Authors</p>
+          <a href="https://arxiv.org/abs/2609.04383" target="_blank" rel="noopener noreferrer">
+            <span class="related-work-title-row"><span class="related-work-name">What Moves?</span><span class="related-work-venue">ECCV 2026</span></span>
+            <span class="related-work-summary">Localized motion representations for compositional scene control.</span>
+          </a>
+          <a
+            href="https://github.com/CompVis/DisMo/tree/main/dismo"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span class="related-work-title-row">
+              <span class="related-work-name">DisMo</span>
+              <span class="related-work-venue">NeurIPS 2025</span>
+            </span>
+            <span class="related-work-summary">
+              Semantic motion representations disentangled from static content
+              for open-world motion transfer.
+            </span>
+          </a>
+        </section>
+
+        <section>
+          <p class="related-work-label">Related Work</p>
+          <a href="https://arxiv.org/abs/2606.04130" target="_blank" rel="noopener noreferrer">
+            <span class="related-work-title-row"><span class="related-work-name">CLAW</span><span class="related-work-venue">arXiv 2026</span></span>
+            <span class="related-work-summary">Jointly learns continuous latent actions and a diffusion world model from action-free video using adversarial latent regularization.</span>
+          </a>
+          <a href="https://arxiv.org/pdf/2606.19408" target="_blank" rel="noopener noreferrer">
+            <span class="related-work-title-row"><span class="related-work-name">FlexLAM</span><span class="related-work-venue">arXiv 2026</span></span>
+            <span class="related-work-summary">Variable-length latent actions trained with nested dropout allow capacity to adapt without retraining.</span>
+          </a>
+        </section>
+      </div>
+    </details>
+<header class="paper-header container">
+  <img class="logo" src="assets/logo.svg" width="64" height="52" alt="StaDy: a green triangle and a golden plus">
+  <h1><span class="project-name">StaDy:</span> Factorizing the World into Static and Dynamic via Likelihood Matching</h1>
+  <div class="authors" aria-label="Authors">
+    <div class="author-row"><a href="https://ffundel.de/" target="_blank" rel="noopener noreferrer">Frank Fundel<sup>*</sup></a><a href="https://www.linkedin.com/in/thomas-ressler-494758133/" target="_blank" rel="noopener noreferrer">Thomas Ressler-Antal<sup>*</sup></a></div>
+    <div class="author-row"><a href="https://www.linkedin.com/in/malek-ben-alaya/" target="_blank" rel="noopener noreferrer">Malek Ben Alaya</a><a href="https://stefan-baumann.eu/" target="_blank" rel="noopener noreferrer">Stefan Andreas Baumann</a><a href="https://ommer-lab.com/ommer/" target="_blank" rel="noopener noreferrer">Björn Ommer</a></div>
+  </div>
+  <p class="affiliations">CompVis @ LMU Munich <span aria-hidden="true">·</span> Munich Center for Machine Learning</p>
+  <p class="equal"><sup>*</sup> Equal contribution</p>
+  <div class="resources" aria-label="Project links">
+
+    <button class="resource" disabled title="arXiv link coming soon"><img class="arxiv-icon" src="assets/arxiv.webp" alt="" aria-hidden="true">arXiv · soon</button>
+    <a class="resource" href="https://github.com/CompVis/StaDy" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 9-4 3 4 3m8-6 4 3-4 3m-2-10-4 14"/></svg>Code</a>
+    <a class="resource" href="https://huggingface.co/CompVis/StaDy" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M5 21h14"/></svg>Weights</a>
+  </div>
+</header>
+<main id="main">
+  <figure class="teaser container">
+    <img src="assets/figures/celebv_sweep.png" width="2117" height="664" alt="Motion transfer across latent dimensions 32 to 2048. The baseline increasingly leaks source appearance; StaDy preserves the target identity in the illustrated examples." fetchpriority="high">
+    <figcaption><strong>More capacity for motion. Less appearance leakage.</strong> As the latent dimensionality grows, a standard latent action model transfers the source identity along with its motion. Adding StaDy preserves the target’s appearance across the illustrated capacity sweep.</figcaption>
+  </figure>
+  <section id="abstract" class="section prose tldr">
+    <h2>TL;DR</h2>
+    <p><strong>StaDy helps latent action models capture motion without leaking appearance.</strong> It encourages the latent code to predict the next state only when paired with the source state, discouraging it from memorizing the target. This reduces appearance leakage without restricting the latent code’s capacity.</p>
+  </section>
+  <section id="method" class="section container">
+    <div class="prose"><h2>Method</h2><p class="section-intro">Learn <em>how the state changes</em>, rather than memorize what the target looks like.</p></div>
+    <figure>
+      <img src="assets/figures/method.png" width="2306" height="1217" alt="Baseline latent action model compared with StaDy. StaDy aligns latent-only and unconditional decoder distributions to discourage static information in the latent code." loading="lazy">
+      <figcaption><strong>Likelihood matching for latent actions.</strong> The inverse dynamics model extracts a latent code from two observations. StaDy encourages its latent-only prediction to match the unconditional prediction, while source-conditioned reconstruction teaches the code to capture useful transitions.</figcaption>
+    </figure>
+
+  </section>
+  <section id="results" class="section container result-tables" aria-label="Results">
+    <div class="result-panel">
+      <table class="result-table" aria-describedby="transfer-note">
+        <caption>StaDy limits appearance leakage</caption>
+        <thead><tr><th scope="col">Metric</th><th scope="col">Method</th><th scope="col">96-D</th><th scope="col">1536-D</th><th scope="col">Δ</th></tr></thead>
+        <tbody>
+          <tr><th scope="rowgroup" rowspan="2">Fidelity ↑</th><td>LAM</td><td><strong>0.292</strong></td><td><strong>0.369</strong></td><td class="trend-good">+26% <span class="trend-emoji" role="img" aria-label="favorable trend">✅</span></td></tr>
+          <tr class="ours"><td>+StaDy</td><td>0.290</td><td>0.360</td><td class="trend-good">+24% <span class="trend-emoji" role="img" aria-label="favorable trend">✅</span></td></tr>
+        </tbody>
+        <tbody>
+          <tr><th scope="rowgroup" rowspan="2">Leakage ↓</th><td>LAM</td><td><strong>0.070</strong></td><td>0.085</td><td class="trend-bad">+21% <span class="trend-emoji" role="img" aria-label="unfavorable trend">❌</span></td></tr>
+          <tr class="ours"><td>+StaDy</td><td>0.071</td><td><strong>0.072</strong></td><td class="trend-good">+1% <span class="trend-emoji" role="img" aria-label="favorable trend">✅</span></td></tr>
+        </tbody>
+        <tbody>
+          <tr><th scope="rowgroup" rowspan="2">Preservation ↑</th><td>LAM</td><td><strong>0.673</strong></td><td>0.579</td><td class="trend-bad">−14% <span class="trend-emoji" role="img" aria-label="unfavorable trend">❌</span></td></tr>
+          <tr class="ours"><td>+StaDy</td><td>0.672</td><td><strong>0.681</strong></td><td class="trend-good">+1% <span class="trend-emoji" role="img" aria-label="favorable trend">✅</span></td></tr>
+        </tbody>
+      </table>
+      <p class="table-note" id="transfer-note">Both methods gain motion fidelity with capacity, but StaDy limits leakage growth and preserves the recipient’s appearance. Δ is the relative change from 96-D to 1536-D.</p>
+    </div>
+    <div class="result-panel">
+      <table class="result-table" aria-describedby="understanding-note">
+        <caption>Larger latent actions improve motion understanding</caption>
+        <thead><tr><th scope="col">Benchmark</th><th scope="col">Method</th><th scope="col">96-D</th><th scope="col">1536-D</th></tr></thead>
+        <tbody>
+          <tr><th scope="rowgroup" rowspan="2">SSv2</th><td>LAM</td><td>17.10</td><td>27.05</td></tr>
+          <tr class="ours"><td>+StaDy</td><td>19.72</td><td><strong>34.95</strong></td></tr>
+        </tbody>
+        <tbody>
+          <tr><th scope="rowgroup" rowspan="2">Jester</th><td>LAM</td><td>59.07</td><td>80.89</td></tr>
+          <tr class="ours"><td>+StaDy</td><td>64.71</td><td><strong>84.18</strong></td></tr>
+        </tbody>
+        <tbody>
+          <tr><th scope="rowgroup" rowspan="2">FineGym99</th><td>LAM</td><td>24.15</td><td>41.90</td></tr>
+          <tr class="ours"><td>+StaDy</td><td>28.54</td><td><strong>45.16</strong></td></tr>
+        </tbody>
+        <tbody>
+          <tr><th scope="rowgroup" rowspan="2">Diving48</th><td>LAM</td><td>9.21</td><td>9.73</td></tr>
+          <tr class="ours"><td>+StaDy</td><td>10.69</td><td><strong>18.08</strong></td></tr>
+        </tbody>
+      </table>
+      <p class="table-note" id="understanding-note">Top-1 accuracy (%) on frozen latents. StaDy improves on LAM at both capacities across all benchmarks.</p>
+    </div>
+  </section>
+  <section id="bibtex" class="section prose citation-section"><div class="citation-heading"><h2>BibTeX</h2><button id="copy-citation" type="button">Copy</button></div><pre><code id="citation">@misc{fundel2026stady,
+  title = {{StaDy}: Factorizing the World into Static and Dynamic via Likelihood Matching},
+  author = {Fundel, Frank and Ressler-Antal, Thomas and Ben Alaya, Malek and Baumann, Stefan Andreas and Ommer, Björn},
+  year = {2026}
+}</code></pre><p id="copy-status" role="status" aria-live="polite"></p></section>
+</main>
+<footer class="container"><img src="assets/logo.svg" width="25" height="20" alt=""><span>StaDy · CompVis @ LMU Munich</span><a href="#top" aria-label="Back to top">Back to top ↑</a></footer>
+</body>
+</html>

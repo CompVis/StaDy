@@ -1,0 +1,15 @@
+{
+  "openworld": {
+    "file": "openworld.pt",
+    "step": 430000,
+    "weights": "online",
+    "sha256": "03d79a4de3e626ed2db05115415e62539dbbd6146ad185c30cd69c1a82a830c3"
+  },
+  "celebv": {
+    "file": "celebv.pt",
+    "run": "latent_dismo_reg_celebv-q64-dm8-reg0-lossreg0p5",
+    "step": 400000,
+    "weights": "online",
+    "sha256": "9b17f1381b5409fad999bc08b5e94b206727d164ae51490f643d16a10b0763de"
+  }
+}
