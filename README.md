@@ -21,6 +21,7 @@
 
 <p align="center">
   <a href="https://compvis.github.io/StaDy/"><img src="https://img.shields.io/badge/Project-Page-blue" alt="Project Page"></a>
+  <a href="https://compvis.github.io/StaDy/assets/paper.pdf"><img src="https://img.shields.io/badge/Paper-PDF-b31b1b" alt="Paper"></a>
   <img src="https://img.shields.io/badge/arXiv-coming_soon-b31b1b" alt="arXiv (coming soon)">
   <a href="https://huggingface.co/CompVis/StaDy"><img src="https://img.shields.io/badge/%F0%9F%A4%97-weights-yellow" alt="Hugging Face weights"></a>
 </p>
